@@ -14,11 +14,12 @@ export class LanguageSwitchingDirective {
     this._renderer.setAttribute(this.el.nativeElement, 'dir', 'rtl');
   }
 
-  @HostListener('keydown', ['$event'])
+  @HostListener('keypress', ['$event'])
   spaceEvent(event: any) {
     const conponent = this.detectedComponent(this.el);
 
     const alphabetMap = this.getCurrentAlphabet(event);
+    conponent.value += ' ' + event.keyCode + ' ' + event.key + ' ';
     console.log(event.keyCode)
     if (this.checkHotKeys(event) || this.isAlreadyInputInArabic(event.key, event.keyCode, alphabetMap)) {
       return;
