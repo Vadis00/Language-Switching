@@ -5,6 +5,7 @@ To use Directive, you need to copy 2 files into your application - language-swit
 ![image](https://user-images.githubusercontent.com/37323791/226741526-044fee39-0cb2-4fde-8403-331323722cb6.png)
 
 Add Directive to your AppModule:
+
 ![image](https://user-images.githubusercontent.com/37323791/226741341-650c7a84-ca3a-482e-a655-974cb61b5639.png)
 
 You can now specify the languageSwitching attribute for your components:
