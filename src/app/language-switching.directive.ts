@@ -5,6 +5,7 @@ import { ArabicAlphabetMap, COMBINATION_SYMBOLS, IsShiftDownArabicAlphabetMap, S
   selector: '[languageSwitching]'
 })
 export class LanguageSwitchingDirective {
+  isShiftDown = false;
 
   constructor(private el: ElementRef, private _renderer: Renderer2) {
     //assign the attribute dir=rtl to the component
@@ -21,7 +22,7 @@ export class LanguageSwitchingDirective {
    * Does nothing if the keyboard layout is already Arabic
    *
    */
-  @HostListener('keypress', ['$event'])
+  @HostListener('keydown', ['$event'])
   spaceEvent(event: any) {
     const conponent = this.detectedComponent(this.el);
 
@@ -51,9 +52,11 @@ export class LanguageSwitchingDirective {
    */
   private getCurrentAlphabet(event: any) {
     if (event.shiftKey) {
+      this.isShiftDown = true;
       return IsShiftDownArabicAlphabetMap;
     }
     else {
+      this.isShiftDown = false;
       return ArabicAlphabetMap;
     }
   }
@@ -79,18 +82,14 @@ export class LanguageSwitchingDirective {
         result += char;
 
       } else if (symbolCode == 66) {
-        let char = this.geSymbolByKeyCode(71, ArabicAlphabetMap);
+        let char = Function("return '\\u" + '0644' + "';")();
         result += char;
+        if(this.isShiftDown) {
+          char = Function("return '\\u" + '0622' + "';")();
+        }else{
+          char = Function("return '\\u" + '0627' + "';")();
+        }
 
-        char = Function("return '\\u" + '0622' + "';")();
-        result += char;
-      }
-    } else {
-      if (symbolCode == 66) {
-        let char = this.geSymbolByKeyCode(71, alphabet);
-        result += char;
-
-        char = Function("return '\\u" + '0627' + "';")();
         result += char;
       }
     }
