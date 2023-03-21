@@ -1,27 +1,13 @@
-# LanguageSwitching
+# Copy the Directive to your Angular application
 
-Copy the dereq to your Angular application
+To use Directive, you need to copy 2 files into your application - language-switching.directive.ts and language-switching.directive.const.ts :
 
-## Development server
+![image](https://user-images.githubusercontent.com/37323791/226741526-044fee39-0cb2-4fde-8403-331323722cb6.png)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Add Directive to your AppModule:
+![image](https://user-images.githubusercontent.com/37323791/226741341-650c7a84-ca3a-482e-a655-974cb61b5639.png)
 
-## Code scaffolding
+You can now specify the languageSwitching attribute for your components:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![image](https://user-images.githubusercontent.com/37323791/226741841-fbc35492-16b7-4b6f-9247-e1940248484a.png)
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
