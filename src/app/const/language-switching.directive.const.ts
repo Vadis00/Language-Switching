@@ -4,6 +4,10 @@ export const SYNCFUSION_COMPONENTS = {
   Richtexteditor: 'ejs-richtexteditor'
 };
 
+  /**
+   * Tables of correspondence of key codes and alphabetic characters
+   *
+   */
 export const ArabicAlphabetMap = new Map([
   [81, '0636'],
   [87, '0635'],

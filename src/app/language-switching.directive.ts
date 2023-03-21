@@ -1,26 +1,32 @@
-import { Directive, ElementRef, HostListener, Input, OnChanges, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 import { ArabicAlphabetMap, COMBINATION_SYMBOLS, IsShiftDownArabicAlphabetMap, SYNCFUSION_COMPONENTS } from './const/language-switching.directive.const';
-
 
 @Directive({
   selector: '[languageSwitching]'
 })
 export class LanguageSwitchingDirective {
-  @Input() languageSwitching = '';
-
-
 
   constructor(private el: ElementRef, private _renderer: Renderer2) {
+    //assign the attribute dir=rtl to the component
     this._renderer.setAttribute(this.el.nativeElement, 'dir', 'rtl');
   }
 
+
+  /**
+   * This decorator listens to the keypress event
+   *
+   * Determines which key on the keyboard was pressed
+   * Using a character match collection replaces the typed character with the corresponding character of the Arabic alphabet
+   *
+   * Does nothing if the keyboard layout is already Arabic
+   *
+   */
   @HostListener('keypress', ['$event'])
   spaceEvent(event: any) {
     const conponent = this.detectedComponent(this.el);
 
     const alphabetMap = this.getCurrentAlphabet(event);
-    conponent.value += ' ' + event.keyCode + ' ' + event.key + ' ';
-    console.log(event.keyCode)
+
     if (this.checkHotKeys(event) || this.isAlreadyInputInArabic(event.key, event.keyCode, alphabetMap)) {
       return;
     }
@@ -39,7 +45,10 @@ export class LanguageSwitchingDirective {
     }
   }
 
-
+  /**
+   * Returns the table of correspondence of key code and characters of the Arabic alphabet
+   *
+   */
   private getCurrentAlphabet(event: any) {
     if (event.shiftKey) {
       return IsShiftDownArabicAlphabetMap;
@@ -49,6 +58,10 @@ export class LanguageSwitchingDirective {
     }
   }
 
+  /**
+   * Defines ctrl + c, ctrl + v, ctrl + a, etc.
+   *
+   */
   private checkHotKeys(event: any): boolean {
     if (event.ctrlKey && (event.keyCode == 86 || event.keyCode == 65 || event.keyCode == 67)) {
       return true;
@@ -85,6 +98,10 @@ export class LanguageSwitchingDirective {
     return result;
   }
 
+  /**
+   * Determines the current keyboard layout, if the keyboard is already Arabic - terminates the directive
+   *
+   */
   private isAlreadyInputInArabic(symbol: number, symbolNumber: number, alphabet: Map<number, string>): boolean {
     var code = alphabet.get(symbolNumber);
     if (code && code !== COMBINATION_SYMBOLS && this.geSymbolByKeyCode(symbolNumber, alphabet) === symbol) {
@@ -93,11 +110,19 @@ export class LanguageSwitchingDirective {
     return false;
   }
 
+  /**
+   * Gets the symbol based on a character code
+   *
+   */
   private geSymbolByKeyCode(symbolCode: number, alphabet: Map<number, string>) {
     var codeValue = alphabet.get(symbolCode)
     return Function("return '\\u" + codeValue + "';")();
   }
 
+  /**
+  * Defines component libraries such syncfusion or Angular material
+  *
+  */
   private detectedComponent(el: ElementRef) {
     switch (this.el.nativeElement.tagName.toLowerCase()) {
       case SYNCFUSION_COMPONENTS.Input:
