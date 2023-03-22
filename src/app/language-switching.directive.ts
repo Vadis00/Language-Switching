@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
-import { ArabicAlphabetMap, COMBINATION_SYMBOLS, IsShiftDownArabicAlphabetMap, SYNCFUSION_COMPONENTS } from './const/language-switching.directive.const';
+import { ALPHABET_REGULAR, ArabicAlphabetMap, COMBINATION_SYMBOLS, IsShiftDownArabicAlphabetMap, SYNCFUSION_COMPONENTS } from './const/language-switching.directive.const';
 
 @Directive({
   selector: '[languageSwitching]'
@@ -84,9 +84,9 @@ export class LanguageSwitchingDirective {
       } else if (symbolCode == 66) {
         let char = Function("return '\\u" + '0644' + "';")();
         result += char;
-        if(this.isShiftDown) {
+        if (this.isShiftDown) {
           char = Function("return '\\u" + '0622' + "';")();
-        }else{
+        } else {
           char = Function("return '\\u" + '0627' + "';")();
         }
 
@@ -101,8 +101,30 @@ export class LanguageSwitchingDirective {
    * Determines the current keyboard layout, if the keyboard is already Arabic - terminates the directive
    *
    */
-  private isAlreadyInputInArabic(symbol: number, symbolNumber: number, alphabet: Map<number, string>): boolean {
+  private isAlreadyInputInArabic(symbol: string, symbolNumber: number, alphabet: Map<number, string>): boolean {
+
+    if (symbol == 'Unidentified') {
+      return true;
+    }
+
     var code = alphabet.get(symbolNumber);
+
+    if (!code) {
+      return true;
+    }
+    var _symbol = this.geSymbolByKeyCode(symbolNumber, alphabet)
+
+    if (symbol !== undefined && ALPHABET_REGULAR.test(symbol)) {
+      return false;
+    }
+
+    if (_symbol == COMBINATION_SYMBOLS && !ALPHABET_REGULAR.test(symbol)) {
+      return false;
+    }
+
+    if (ALPHABET_REGULAR.test(_symbol)) {
+      return false;
+    }
     if (code && code !== COMBINATION_SYMBOLS && this.geSymbolByKeyCode(symbolNumber, alphabet) === symbol) {
       return true;
     }
@@ -115,7 +137,10 @@ export class LanguageSwitchingDirective {
    */
   private geSymbolByKeyCode(symbolCode: number, alphabet: Map<number, string>) {
     var codeValue = alphabet.get(symbolCode)
-    return Function("return '\\u" + codeValue + "';")();
+    if (codeValue !== COMBINATION_SYMBOLS) {
+      return Function("return '\\u" + codeValue + "';")();
+    }
+    return COMBINATION_SYMBOLS;
   }
 
   /**
