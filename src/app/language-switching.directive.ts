@@ -23,9 +23,31 @@ export class LanguageSwitchingDirective {
    *
    */
   @HostListener('keydown', ['$event'])
-  spaceEvent(event: any) {
-    const conponent = this.detectedComponent(this.el);
+  async spaceEvent(event: any) {
 
+    const conponent = await this.detectedComponent(this.el);
+    this.replaceText(event, conponent);
+  }
+
+  @HostListener('click', ['$event'])
+  async clickEvent() {
+    const el = await this.detectedComponent(this.el);
+    if (this.el.nativeElement.tagName.toLowerCase() !== SYNCFUSION_COMPONENTS.Dropdown) {
+      return;
+    }
+
+    if (el) {
+      this._renderer.setAttribute(el, 'dir', 'rtl');
+      el.addEventListener("keydown", (ev: any) => {
+        this.replaceText(ev, el);
+
+        var _ev = new Event('input');
+        el?.dispatchEvent(_ev);
+      });
+    }
+  }
+
+  private replaceText(event: any, conponent: any) {
     const alphabetMap = this.getCurrentAlphabet(event);
 
     if (this.checkHotKeys(event) || this.isAlreadyInputInArabic(event.key, event.keyCode, alphabetMap)) {
@@ -42,7 +64,6 @@ export class LanguageSwitchingDirective {
         char = this.geSymbolByKeyCode(event.keyCode, alphabetMap);
       }
       conponent.value += char;
-
     }
   }
 
@@ -147,15 +168,26 @@ export class LanguageSwitchingDirective {
   * Defines component libraries such syncfusion or Angular material
   *
   */
-  private detectedComponent(el: ElementRef) {
+  private async detectedComponent(el: ElementRef) {
     switch (this.el.nativeElement.tagName.toLowerCase()) {
       case SYNCFUSION_COMPONENTS.Input:
         return el.nativeElement.children[0].children[0];
       case SYNCFUSION_COMPONENTS.Richtexteditor:
         return el.nativeElement.children[0];
+      case SYNCFUSION_COMPONENTS.Dropdown:
+        let i = 0;
+        while (i < 20) {
+          i++;
+          await new Promise(resolve => setTimeout(resolve, 10));
+          let form = document.getElementsByClassName('e-popup-open');
+          if (form[0]?.children[0].children[0].children[0].tagName.toLowerCase() === 'input') {
+            return form[form.length - 1]?.children[0].children[0].children[0];
+          }
+        }
+        return (el.nativeElement as HTMLInputElement);
       default:
         return (el.nativeElement as HTMLInputElement);
     }
-
   }
+
 }

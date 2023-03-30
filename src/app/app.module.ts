@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormField } from '@angular/material/form-field';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import {TextBoxModule} from '@syncfusion/ej2-angular-inputs';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 @NgModule({
   exports: [],
   declarations: [
@@ -21,7 +22,8 @@ import {TextBoxModule} from '@syncfusion/ej2-angular-inputs';
     BrowserAnimationsModule,
     MatInputModule,
     RichTextEditorModule,
-    TextBoxModule
+    TextBoxModule,
+    DropDownListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

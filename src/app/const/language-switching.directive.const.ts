@@ -2,7 +2,8 @@ export const COMBINATION_SYMBOLS = 'characterCombination';
 export const ALPHABET_REGULAR =  /^[A-Za-z0-9]*$/
 export const SYNCFUSION_COMPONENTS = {
   Input: 'ejs-textbox',
-  Richtexteditor: 'ejs-richtexteditor'
+  Richtexteditor: 'ejs-richtexteditor',
+  Dropdown: 'ejs-dropdownlist',
 };
 
   /**
