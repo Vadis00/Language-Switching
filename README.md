@@ -1,3 +1,5 @@
+This directive allows you to enter text in Arabic input fields without having to switch keyboard layouts.
+
 # Copy the Directive to your Angular application
 
 To use Directive, you need to copy 2 files into your application - language-switching.directive.ts and language-switching.directive.const.ts :
